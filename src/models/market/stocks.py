@@ -3,20 +3,30 @@ from dataclasses import dataclass
 @dataclass
 class stock_price:
     date: str
-    open: int
-    high: int
-    low: int
-    close: int
+    open: float
+    high: float
+    low: float
+    close: float
     volume: int
 
-    def __init__(self, date='', open='', 
-        high=-1, low=-1, close=-1, volume=-1) -> None:
+    def __init__(self, date='', open=-1.0, 
+        high=-1.0, low=-1.0, close=-1.0, volume=-1) -> None:
         self.date = date
         self.open = open
         self.high = high
         self.low = low
         self.close = close
         self.volume = volume
+    
+    def json(self):
+        return {
+            "date": self.date,
+            "open": self.open,
+            "high": self.high,
+            "low": self.low,
+            "close": self.close,
+            "volume": self.volume
+        }
 
 
 from datetime import datetime

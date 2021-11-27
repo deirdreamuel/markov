@@ -28,14 +28,14 @@ class google_finance(client):
             stock_data = result['values']
 
             # format response to json stock data
-            data = [stock_price]
+            data = []
             for i, _ in enumerate(stock_data):
                 stock_entry = stock_price()
 
                 for (j, field) in enumerate(stock_price.__dataclass_fields__):
                     setattr(stock_entry, field, stock_data[i][j])
 
-                data.append(stock_entry)
+                data.append(stock_entry.json())
 
         except Exception as error:
             print("Google finance error:", error)

@@ -5,11 +5,11 @@ class client:
     def fetch(query: stock_query):
         raise 'stocks client fetch function template'
 
-class stock_market:
+class interface:
     __client: client
 
     def __init__(self, client) -> None:
         self.__client = client
 
-    def query(self, query: stock_query) -> List[stock_price]:
+    def fetch(self, query: stock_query) -> List[stock_price]:
         return self.__client.fetch(query)

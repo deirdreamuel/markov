@@ -1,4 +1,4 @@
 from api.google.finance import finance
-from market.stocks import stock_market
+from market.stocks import interface
 
-google_client = stock_market(finance)
+stocks_client = interface(finance)
