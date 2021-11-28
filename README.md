@@ -10,7 +10,7 @@ generate your google service account and update ```src/api/google/credentials.js
 
 ## Setup virtual environment
 setup virtual environment with python3
-```
+``` bash
 virtualenv env -p python3
 source ./env/bin/activate
 
@@ -21,7 +21,7 @@ pip install -r requirements.txt
 make sure you have properly setup your environment
 Run Flask server 
 
-```
+``` bash
 python src/gql.py
 ```
 
@@ -30,17 +30,25 @@ then it should be running on ```localhost:5000/graphql```.
 ### Sample GraphQL query
 here is a simple graphql query to obtain stock information using the api,
 
-```
+``` graphql
 query {
   stock (ticker:"GOOG") {
     ticker,
-    historical (begin:"2020-11-11", end:"2021-11-11") {
+    financial {
+        marketcap,
+        pe,
+        eps,
+        shares
+    },
+    historical (begin:"2011-10-02", end:"2021-10-24") {
       begin,
       end,
       prices {
       	date,
         open,
         close,
+        high,
+        low,
         volume
       }
     }
