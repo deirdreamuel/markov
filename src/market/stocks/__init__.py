@@ -13,3 +13,9 @@ class interface:
 
     def fetch(self, query: stock_query) -> List[stock_price]:
         return self.__client.fetch(query)
+    
+    def attr(self, query: stock_query):
+        return self.__client.attr(query)
+
+    def attrs(self, query: stock_query):
+        return self.__client.attrs(query)
