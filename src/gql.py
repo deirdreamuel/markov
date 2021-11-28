@@ -1,13 +1,14 @@
-from ariadne import QueryType, graphql_sync, make_executable_schema
-from ariadne import ObjectType
+from ariadne import ObjectType, QueryType
+from ariadne import graphql_sync, make_executable_schema
 from ariadne.constants import PLAYGROUND_HTML
+
+from datetime import datetime
 
 from flaskr import app
 from flask import request, jsonify
 
-from datetime import datetime
-from models.market.stocks import stock_query
 from models.errors import Error
+from models.market.stocks import stock_query
 from market.stocks.client import stocks_client
 
 query = QueryType()
