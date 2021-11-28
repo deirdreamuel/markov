@@ -1,4 +1,3 @@
-import json
 from api.google.service import service
 from market.stocks import client
 from models.market.stocks import stock_info, stock_price, stock_query
@@ -45,7 +44,7 @@ class google_finance(client):
         return data
 
     def attr(self, query: stock_query):
-        data = ''
+        data = None
 
         try:
             sheets_input = '=GOOGLEFINANCE("{0}", "{1}")'.format(query.ticker, query.attr)
@@ -66,30 +65,30 @@ class google_finance(client):
         return data
 
     def attrs(self, query: stock_query):
-        data = ''
+        data = None
 
         try:
+            # split attributes by comma
             attributes = query.attr.split(',')
-
             if (len(attributes) < 1):
                 raise 'Error, please use multiple attributes in stock query'
 
-            inputs = []
-            read_range = 'Sheet1!A1:{0}1'.format(chr(ord('A') + len(attributes) - 1))
-
-            for i in attributes:
-                input = '=GOOGLEFINANCE("{0}", "{1}")'.format(query.ticker, i)
-                inputs.append(input)
+            # get input for sheets api
+            sheets_input = ['=GOOGLEFINANCE("{0}", "{1}")'.format(
+                query.ticker, i) for i in attributes]
 
             input_value = {
-                'values': [inputs]
+                'values': [sheets_input]
             }
 
             # update spreadsheet then fetch all values
             service.update_spreadsheet(self.id, 'Sheet1!A1', input_value)
+
+            read_range = 'Sheet1!A1:{0}1'.format(chr(ord('A') + len(attributes) - 1))
             result = service.get_spreadsheet(self.id, read_range)
             service.clear_spreadsheet(self.id, read_range)
 
+            # set as stock info object
             data = stock_info()
             for (i, attr) in enumerate(attributes):
                 setattr(data, attr, result['values'][0][i])
