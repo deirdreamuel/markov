@@ -1,5 +1,4 @@
 from googleapiclient.discovery import build
-from httplib2 import Response
 from api.google.auth import auth
 
 """
@@ -70,7 +69,7 @@ class google_service:
         except Exception as error:
             raise Exception('Google sheets api insert exception occurred')
 
-        return Response
+        return response
 
     # get spreadsheet values using sheets api
     def get_spreadsheet(self, id, range):

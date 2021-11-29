@@ -1,4 +1,3 @@
-from logging import exception
 from api.google.service import service
 from market.stocks.client import client
 from models.market.stocks import stock_info, stock_price, stock_query
