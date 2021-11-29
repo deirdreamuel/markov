@@ -32,8 +32,8 @@ here is a simple graphql query to obtain stock information using the api,
 
 ``` graphql
 query {
-  stock (ticker:"GOOG") {
-    ticker,
+  stock (symbol:"GOOG") {
+    symbol,
     financial {
         marketcap,
         pe,

@@ -1,6 +1,8 @@
+from logging import exception
 from api.google.service import service
-from market.stocks import client
+from market.stocks.client import client
 from models.market.stocks import stock_info, stock_price, stock_query
+from models.errors import Error
 
 class google_finance(client):
     id: str
@@ -15,7 +17,7 @@ class google_finance(client):
         try:
             # cell input value
             sheets_input = '=GOOGLEFINANCE("{0}", "{1}", {2}, {3}, {4})'.format(
-                query.ticker, query.attr, query.start_date.strftime("DATE(%Y,%m,%d)"),
+                query.symbol, query.attr, query.start_date.strftime("DATE(%Y,%m,%d)"),
                 query.end_date.strftime("DATE(%Y,%m,%d)"), query.interval)
 
             input_value = {
@@ -23,9 +25,13 @@ class google_finance(client):
             }
 
             # update spreadsheet then fetch all values
-            service.update_spreadsheet(self.id, 'Sheet1!A1', input_value)
+            spreadsheet = service.update_spreadsheet(self.id, 'Sheet1!A1', input_value)
             result = service.get_spreadsheet(self.id, 'Sheet1!A2:F')
-            stock_data = result['values']
+
+            try:
+                stock_data = result['values']
+            except Exception as error:
+                raise Error('Error fetching values from database')
 
             # format response to json stock data
             data = []
@@ -38,7 +44,7 @@ class google_finance(client):
                 data.append(stock_entry.object())
 
         except Exception as error:
-            print("Google finance error fetch:", error)
+            print("Exception occured: ", error)
             raise error
         
         return data
@@ -47,7 +53,7 @@ class google_finance(client):
         data = None
 
         try:
-            sheets_input = '=GOOGLEFINANCE("{0}", "{1}")'.format(query.ticker, query.attr)
+            sheets_input = '=GOOGLEFINANCE("{0}", "{1}")'.format(query.symbol, query.attr)
             input_value = {
                 'values': [[sheets_input]]
             }
@@ -75,7 +81,7 @@ class google_finance(client):
 
             # get input for sheets api
             sheets_input = ['=GOOGLEFINANCE("{0}", "{1}")'.format(
-                query.ticker, i) for i in attributes]
+                query.symbol, i) for i in attributes]
 
             input_value = {
                 'values': [sheets_input]
@@ -91,12 +97,17 @@ class google_finance(client):
             # set as stock info object
             data = stock_info()
             for (i, attr) in enumerate(attributes):
-                setattr(data, attr, result['values'][0][i])
+                attr_val = result['values'][0][i]
+                if attr_val == '#N/A':
+                    attr_val = None
+                
+                setattr(data, attr, attr_val)
 
+            data = data.object()
         except Exception as error:
             print("Google finance error attrs:", error)
             raise error
 
-        return data.object()
+        return data
 
 finance = google_finance("1e3km5HHUvzEJx53kCkErvtldAr8_zrUgzXEvo757TYs")

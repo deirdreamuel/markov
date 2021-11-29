@@ -1,4 +1,5 @@
 from googleapiclient.discovery import build
+from httplib2 import Response
 from api.google.auth import auth
 
 """
@@ -60,12 +61,16 @@ class google_service:
 
     # update spreadsheet values using sheets api
     def update_spreadsheet(self, id, range, values):
-        response = self.sheets_service.spreadsheets().values().update(
-            spreadsheetId=id, range=range, 
-            valueInputOption='USER_ENTERED', body=values).execute()
+        response = None
 
-        if not response:
-            raise 'Google sheets api insert exception occurred'
+        try:
+            response = self.sheets_service.spreadsheets().values().update(
+                spreadsheetId=id, range=range, 
+                valueInputOption='USER_ENTERED', body=values).execute()
+        except Exception as error:
+            raise Exception('Google sheets api insert exception occurred')
+
+        return Response
 
     # get spreadsheet values using sheets api
     def get_spreadsheet(self, id, range):
@@ -74,7 +79,7 @@ class google_service:
             response = self.sheets_service.spreadsheets().values().get(
                 spreadsheetId=id, range=range).execute()
         except Exception as error: 
-            print('Google sheets api retrieve exception occurred')
+            raise Exception('Google sheets api retrieve exception occurred')
 
         return response
 
