@@ -1,11 +1,40 @@
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
+class stock_company: 
+    symbol= Optional[str]
+    name = Optional[str]
+    industry = Optional[str]
+    sector = Optional[str]
+    ipo = Optional[int]
+    country = Optional[str]
+
+    def __init__(self) -> None:
+        self.symbol= None
+        self.name = None
+        self.industry = None
+        self.sector = None
+        self.ipo = None
+        self.country = None
+        pass
+
+    def object(self):
+        return {
+            "symbol": self.symbol,
+            "name": self.name,
+            "industry": self.industry,
+            "sector": self.sector,
+            "ipo": self.ipo,
+            "country": self.country,
+        }
+        
+@dataclass
 class stock_info:
-    eps: float
-    marketcap: float
-    pe: float
-    shares: float
+    eps: Optional[float]
+    marketcap: Optional[float]
+    pe: Optional[float]
+    shares: Optional[float]
 
     def __init__(self, eps=0, marketcap=-1.0, pe=0, shares=-1) -> None:
         self.eps = eps
@@ -54,14 +83,14 @@ from datetime import datetime, date
 
 @dataclass
 class stock_query:
-    ticker: str
+    symbol: str
     attr: str
     start_date: datetime
     end_date: datetime
     interval: int
 
-    def __init__(self, ticker, start=date.today(), end=date.today(), attr='all', interval=1) -> None:
-        self.ticker = ticker
+    def __init__(self, symbol, start=date.today(), end=date.today(), attr='all', interval=1) -> None:
+        self.symbol = symbol
         self.start_date = start
         self.end_date = end
         self.attr = attr

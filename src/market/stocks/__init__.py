@@ -1,21 +1,4 @@
-from typing import List
-from models.market.stocks import stock_query, stock_price
+from api.google.finance import finance
+from market.stocks.interface import interface
 
-class client:
-    def fetch(query: stock_query):
-        raise 'stocks client fetch function template'
-
-class interface:
-    __client: client
-
-    def __init__(self, client) -> None:
-        self.__client = client
-
-    def fetch(self, query: stock_query) -> List[stock_price]:
-        return self.__client.fetch(query)
-    
-    def attr(self, query: stock_query):
-        return self.__client.attr(query)
-
-    def attrs(self, query: stock_query):
-        return self.__client.attrs(query)
+stocks = interface(finance)

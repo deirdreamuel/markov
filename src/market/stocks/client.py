@@ -1,4 +1,9 @@
-from api.google.finance import finance
-from market.stocks import interface
+from models.market.stocks import stock_query
 
-stocks_client = interface(finance)
+class client:
+    def fetch(query: stock_query):
+        raise 'stocks client fetch function template'
+    def attr(query: stock_query):
+        raise 'stocks client attr function template'
+    def attrs(query: stock_query):
+        raise 'stocks client attr function template'
