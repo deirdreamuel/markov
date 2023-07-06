@@ -1,9 +1,9 @@
-from models.market.stocks import stock_query
+from models.market.stocks import StockQuery
 
-class client:
-    def fetch(query: stock_query):
+class StockClient:
+    def fetch(query: StockQuery):
         raise 'stocks client fetch function template'
-    def attr(query: stock_query):
+    def attr(query: StockQuery):
         raise 'stocks client attr function template'
-    def attrs(query: stock_query):
+    def attrs(query: StockQuery):
         raise 'stocks client attr function template'

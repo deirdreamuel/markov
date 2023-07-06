@@ -1,4 +1,4 @@
 from api.google.finance import finance
-from market.stocks.interface import interface
+from market.stocks.interface import IStockClient
 
-stocks = interface(finance)
+stocks = IStockClient(finance)

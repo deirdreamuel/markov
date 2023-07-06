@@ -15,7 +15,7 @@ logging.basicConfig(filename='debug.log',
 def graphql_server():
     # GraphQL queries are always sent as POST
     data = request.get_json()
-
+    
     # Note: Passing the request to the context is optional.
     # In Flask, the current request is always accessible as flask.request
     success, result = graphql_sync(
@@ -38,4 +38,4 @@ def graphql_playground():
     return PLAYGROUND_HTML, 200
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=7777)

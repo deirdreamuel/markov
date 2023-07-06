@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 @dataclass
-class stock_company: 
+class StockDetails: 
     symbol= Optional[str]
     name = Optional[str]
     industry = Optional[str]
@@ -30,7 +30,7 @@ class stock_company:
         }
         
 @dataclass
-class stock_info:
+class StockFinancial:
     eps: Optional[float]
     marketcap: Optional[float]
     pe: Optional[float]
@@ -51,7 +51,7 @@ class stock_info:
         }
 
 @dataclass
-class stock_price:
+class StockPrice:
     date: str
     open: float
     high: float
@@ -82,7 +82,7 @@ class stock_price:
 from datetime import datetime, date
 
 @dataclass
-class stock_query:
+class StockQuery:
     symbol: str
     attr: str
     start_date: datetime

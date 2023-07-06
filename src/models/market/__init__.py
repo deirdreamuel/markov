@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 @dataclass
-class stock_market:
+class StockMarket:
     exchange: str
     industries: list
     symbols: list

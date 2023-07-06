@@ -5,7 +5,7 @@ from ariadne import make_executable_schema
 from datetime import datetime
 
 from models.errors import Error
-from models.market.stocks import stock_info, stock_query, stock_company
+from models.market.stocks import StockQuery, StockDetails
 from market.stocks import stocks
 from market.exchange import exchange, stock_exchanges
 
@@ -98,7 +98,7 @@ def resolve_stocks(obj, _, industry: str = "", sector: str = ""):
         companies = []
         entries = stock_exchanges[exchange][industry_query & sector_query]
         for entry in entries.to_dict('records'):
-            company = stock_company()
+            company = StockDetails()
             for key in entry.keys():
                 if not isna(entry[key]):
                     setattr(company, key.lower(), entry[key])
@@ -121,7 +121,7 @@ def resolve_stock(*_, symbol: str, exchange: str = 'NASDAQ'):
     
     stock = None
     try:
-        company = stock_company()
+        company = StockDetails()
         symbol = symbol.upper().strip()
         setattr(company, 'symbol', symbol)
 
@@ -144,7 +144,7 @@ def resolve_stock(*_, symbol: str, exchange: str = 'NASDAQ'):
 def resolve_financial(obj, _):
     financial = {}
     try:
-        query = stock_query(obj['symbol'], attr="eps,pe,marketcap,shares")
+        query = StockQuery(obj['symbol'], attr="eps,pe,marketcap,shares")
         financial = stocks.attrs(query)
 
     except Exception as error:
@@ -174,7 +174,7 @@ def resolve_historical(obj, _, begin: str, end: str):
         historical['begin'] = begin_date
         historical['end'] = end_date
 
-        query = stock_query(obj['symbol'], begin_date, end_date)
+        query = StockQuery(obj['symbol'], begin_date, end_date)
         prices = stocks.fetch(query)
         if (prices): 
             historical['prices'] = prices
